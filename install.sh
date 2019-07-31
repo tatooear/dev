@@ -46,3 +46,8 @@ sudo sh get-docker.sh
 
 wget -O /bin/pgrepper https://raw.githubusercontent.com/rubikitch/pgrepper/master/pgrepper
 chmod +x /bin/pgrepper
+
+#emacs
+sudo add-apt-repository ppa:kelleyk/emacs
+sudo apt update
+sudo apt install emacs26
