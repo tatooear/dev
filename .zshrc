@@ -1,10 +1,27 @@
-
+export LANG=ja_JP.UTF-8
+export LANGUAGE="ja_JP:ja"
+export LC_CTYPE=ja_JP.UTF-8
+export LC_NUMERIC="ja_JP.UTF-8"
+export LC_TIME=ja_JP.UTF-8
+export LC_COLLATE=ja_JP.UTF-8
+export LC_MONETARY="ja_JP.UTF-8"
+export LC_MESSAGES=ja_JP.UTF-8
+export LC_PAPER="ja_JP.UTF-8"
+export LC_NAME=ja_JP.UTF-8
+export LC_ADDRESS="ja_JP.UTF-8"
+export LC_TELEPHONE="ja_JP.UTF-8"
+export LC_MEASUREMENT=ja_JP.UTF-8
+export LC_IDENTIFICATION=ja_JP.UTF-8
+export DISPLAY=:0.0
+export PATH="/home/linuxbrew/.linuxbrew/bin:`yarn global bin`:$PATH"
+export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
 
 source ~/.zplug/init.zsh
 
 zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
 zplug "mollifier/anyframe"
-zplug "b4b4r07/enhancd"
+zplug "b4b4r07/enhancd", use:init.sh
 zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-completions"
@@ -32,10 +49,11 @@ zplug load --verbose
 
 POWERLEVEL9K_MODE='nerdfont-complete'
 
-export LANG=ja_JP.UTF-8
 export LESS="-RNS"
-export LESSOPEN="| /home/linuxbrew/.linuxbrew/bin/src-hilite-lesspipe.sh %s"
+export LESSOPEN="| $HOME/src-hilite-lesspipe.sh %s"
 export PAGER="less"
+export EDITOR="emacsclient -n"
+export GREP_COLORS="ms=01;31:mc=01;31:sl=:cx=:fn=36:ln=32:bn=32:se=01;33"
 
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
@@ -43,6 +61,9 @@ SAVEHIST=10000
 LISTMAX=10000
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
+eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+
+bindkey -e
 autoload history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
@@ -106,6 +127,11 @@ setopt rmstar_wait          # rm * を実行する前に確認される。
 setopt share_history        # 複数プロセスで履歴を共有
 setopt bang_hist
 
+if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
+  zcompile ~/.zshrc
+fi
+
+
 alias grep="grep --color=always"
 alias fgrep="fgrep --color=always"
 alias egrep="egrep --color=always"
@@ -113,6 +139,7 @@ alias zgrep="zgrep --color=always"
 alias zmv="noglob zmv -W"
 alias diff="colordiff --strip-trailing-cr"
 alias sdiff="sdiff --strip-trailing-cr"
+alias rg="rg -uu --color=always"
 
 alias ls="lsd --color=always"
 alias la="lsd -lah --color=always"
@@ -126,12 +153,19 @@ alias cp="cp -ip"
 alias mv="mv -i"
 alias mk="mkdir -p"
 
+alias ssh='TERM=xterm-256color ssh'
+
 alias dvp="tar xfzv"
 alias cmp="tar cfzv"
+
+alias em="emacs"
+alias en="emacsclient -n"
+alias ed="emacs --deamon"
 
 alias hi="history -nir 0"
 
 alias pd="cd -"
+alias bd="cd .."
 alias peco="peco --initial-filter migemo"
 
 alias -g L="| less"
@@ -161,8 +195,14 @@ function ediff () { emacsclient -n --eval "(ediff-files \"$1\" \"$2\")" }
 function er () { emacsclient -n --eval "(find-file-read-only \"$1\")" }
 function pe () { emacsclient -n $(pt "$@" | peco | awk -F : '{print "+" $2 " " $1}') }
 function ae () { emacsclient -n $(ag "$@" | peco | awk -F : '{print "+" $2 " " $1}') }
+function re () { emacsclient -n $(rg "$@" | peco | awk -F : '{print "+" $2 " " $1}') }
 function cls() { emacsclient -n $(find ./ -maxdepth 1 -type f | sort | peco ) }
 function ccd() { cd "$(find . -maxdepth 1 -type d | peco)" }
+function pls() { jl "$(find . -maxdepth 1 -type f | peco)" }
+
+function google () {
+    xdg-open "https://www.google.co.jp/search?q=$1"
+}
 
 function rampass {
 
