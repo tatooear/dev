@@ -56,6 +56,19 @@ chmod +x /bin/pgrepper
 sudo add-apt-repository ppa:kelleyk/emacs
 sudo apt update
 sudo apt install emacs26
+mkdir -p ~/.emacs.d/git
+cd ~/.emacs.d/git
+
+git clone https://github.com/emacs-jp/dmacro
+git clone https://github.com/imakado/emacs-smartchr
+git clone https://gist.github.com/tnoda/1776988
+mv 1776988 sense-region
+git clone https://github.com/k1LoW/emacs-sense-expand-region
+git clone https://github.com/derui/mozc-posframe
+git clone https://github.com/iRi-E/mozc-el-extensions
+git clone https://github.com/zk-phi/git-complete
+git clone https://github.com/zk-phi/sky-color-clock
+git clone https://github.com/blue0513/point-history
 
 #font
 sudo apt install fonts-noto-cjk fonts-takao-gothic fonts-vlgothic fonts-ricty-diminished
